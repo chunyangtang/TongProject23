@@ -165,3 +165,7 @@ cython_debug/
 # Visual Studio Code
 .vscode/
 *.code-workspace
+
+# Output files and pretrained models
+exps/
+pretrained/
