@@ -1,0 +1,7 @@
+numpy
+matplotlib
+torch
+torchvision
+torchaudio
+pygame
+opencv-contrib-python
