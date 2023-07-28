@@ -5,3 +5,7 @@ torchvision
 torchaudio
 pygame
 opencv-contrib-python
+# push-to-see
+scipy
+pyyaml
+pycocotools
