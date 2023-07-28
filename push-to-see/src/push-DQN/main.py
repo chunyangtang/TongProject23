@@ -1,7 +1,5 @@
 import sys
-import platform
-if platform.system() == 'Windows':
-    sys.path.append('.')
+sys.path.append('.')
 from src.mask_rg.mask_rg import MaskRG
 import time
 import os
