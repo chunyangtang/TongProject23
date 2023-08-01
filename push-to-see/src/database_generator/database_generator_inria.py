@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 import socket
 import select
 import struct
@@ -289,7 +291,7 @@ class DatabaseGenerator(object):
 
 if __name__ == "__main__":
     # Read configuration file
-    config_file = os.getcwd() + '/database_config_inria.yaml'
+    config_file = os.getcwd() + '/src/database_generator/database_config_inria.yaml'
     with open(config_file) as f:
         configuration = yaml.load(f, Loader=yaml.FullLoader)
 

@@ -14,7 +14,7 @@ model:
 
 
 dataset:
-  path: ./Database # The folders and files in the subsections below should be placed in this folder.
+  path: ./Database_vrep_inria/ # The folders and files in the subsections below should be placed in this folder.
   images: depth_ims/NUMPY
   masks: segmentation_masks/PNG
   train_indices: train_indices.npy
@@ -23,6 +23,6 @@ dataset:
   data_augmentation: False
 
 saving:
-  path: ./saved_models/inria_train_2
+  path: saved_models/inria_train_2
   model_name: my_model_inria_v2_0ep_
   config_name:
