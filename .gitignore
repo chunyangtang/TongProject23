@@ -168,4 +168,6 @@ cython_debug/
 
 # Output files and pretrained models
 exps/
+logs/
 pretrained/
+saved_models/

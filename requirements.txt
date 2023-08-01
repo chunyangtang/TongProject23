@@ -1,11 +1,13 @@
 numpy
 matplotlib
-torch
-torchvision
-torchaudio
 pygame
 opencv-contrib-python
 # push-to-see
 scipy
 pyyaml
 pycocotools
+# pytorch
+--extra-index-url https://download.pytorch.org/whl/cu117
+torch==1.13.1+cu117
+torchvision==0.14.1+cu117
+torchaudio==0.13.1

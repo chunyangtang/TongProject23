@@ -1,5 +1,5 @@
 database:
-  path: ~/Database_vrep_inria/ # Change this, if you want to save your dataset into another location
+  path: ./Database/Database_vrep_inria/ # Change this, if you want to save your dataset into another location
   settings:
     database_size: 1250 # Number of scenes to generate
     max_num_obj: 32 # Maximum number of objects dropped per scene
