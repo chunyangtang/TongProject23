@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 from model import MaskRGNetwork
 from dataset import PushAndGraspDataset
 import yaml
