@@ -3,6 +3,7 @@ sys.path.append('.')
 from src.mask_rg.mask_rg import MaskRG
 import time
 import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 import random
 import threading
 import matplotlib.pyplot as plt
@@ -190,7 +191,7 @@ def main():
                 if save_visualizations:
                     push_pred_vis = trainer.get_prediction_vis(push_predictions, color_heightmap, nonlocal_variables['best_pix_ind'])
                     logger.save_visualizations(trainer.iteration, push_pred_vis, 'push')
-                    cv2.imwrite('visualization.push.png', push_pred_vis)
+                    cv2.imwrite('exps/visualization.push.png', push_pred_vis)
 
                 # Initialize variables that influence reward
                 nonlocal_variables['push_success'] = False
@@ -240,9 +241,9 @@ def main():
             # Get ground truth segmentation masks
             color_m_rg, depth_m_rg, [segmentation_mask, num_objects] = robot.get_data_mask_rg()
             # print(num_objects)
-            plt.imsave('ground_truth.png', segmentation_mask)
-            plt.imsave('color_img.png', color_m_rg)
-            plt.imsave('depth_img.png', depth_m_rg)
+            plt.imsave('exps/ground_truth.png', segmentation_mask)
+            plt.imsave('exps/color_img.png', color_m_rg)
+            plt.imsave('exps/depth_img.png', depth_m_rg)
 
             # set the mask rcnn reward generator with the current depth and gt
             mask_rg.set_reward_generator(depth_m_rg, segmentation_mask)
@@ -250,10 +251,10 @@ def main():
             # get the rewards predictions
             pred_ids, seg_reward, err_rate = mask_rg.get_current_rewards()
             printout = mask_rg.print_segmentation(pred_ids)
-            plt.imsave('mask_pred_diff.png', printout)
+            plt.imsave('exps/mask_pred_diff.png', printout)
 
-            # all_masks = mask_rg.print_masks()
-            # plt.imsave('mask_pred_all.png', all_masks)
+            all_masks = mask_rg.print_masks()
+            plt.imsave('exps/mask_pred_all.png', all_masks)
 
             prev_seg_reward = seg_reward.copy()
             prev_depth_for_chg_det = depth_m_rg.copy()
@@ -412,17 +413,17 @@ def main():
             color_img_action, depth_img_raw_action = robot.get_camera_data()
             # Get ground truth segmentation masks
             color_m_rg_act, depth_m_rg_act, [segmentation_mask_action, num_objects_action] = robot.get_data_mask_rg()
-            plt.imsave('ground_truth.png', segmentation_mask_action)
-            plt.imsave('color_img.png', color_m_rg_act)
-            plt.imsave('depth_img.png', depth_m_rg_act)
+            plt.imsave('exps/ground_truth.png', segmentation_mask_action)
+            plt.imsave('exps/color_img.png', color_m_rg_act)
+            plt.imsave('exps/depth_img.png', depth_m_rg_act)
             mask_rg.set_reward_generator(depth_m_rg_act, segmentation_mask_action)
 
             pred_ids, seg_reward, err_rate = mask_rg.get_current_rewards()
             printout = mask_rg.print_segmentation(pred_ids)
-            plt.imsave('mask_pred_diff.png', printout)
+            plt.imsave('exps/mask_pred_diff.png', printout)
             print('Number of the objects left in the scene after pushing action -->', num_objects_action.size - 1)
-            # all_masks = mask_rg.print_masks()
-            # plt.imsave('mask_pred_all.png', all_masks)
+            all_masks = mask_rg.print_masks()
+            plt.imsave('exps/mask_pred_all.png', all_masks)
 
         trainer.iteration += 1
         iteration_time_1 = time.time()

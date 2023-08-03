@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\t-c-y\Desktop\VREP_PROJECT\deepmask-pytorch')
+sys.path.append('.')
 import argparse
 import models
 import numpy as np

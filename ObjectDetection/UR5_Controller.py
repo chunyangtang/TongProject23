@@ -274,22 +274,22 @@ def main_IK():
     controller.goToPosition_Absolute([cupPosition[0], cupPosition[1], cupPosition[2] + 0.02])
     controller.closeRG2()
     time.sleep(2)
-    controller.goToPosition_Absolute(tipPosition)
-    controller.openRG2()
+    controller.goToPosition_Absolute([tipPosition[0], tipPosition[1]+0.2, tipPosition[2]])
+    # controller.openRG2()
 
-    imgRGB, imgDepth = getCameraImage(controller, camRGBHandle, camDepthHandle)
-    cv2.imwrite("exps\\imgTemp\\rgb.jpg", imgRGB)
-    cv2.imwrite("exps\\imgTemp\\depth.jpg", imgDepth)
+    # imgRGB, imgDepth = getCameraImage(controller, camRGBHandle, camDepthHandle)
+    # cv2.imwrite("exps\\imgTemp\\rgb.jpg", imgRGB)
+    # cv2.imwrite("exps\\imgTemp\\depth.jpg", imgDepth)
 
-    cuboidHandle: int = controller.sim.getObject('/Cuboid')
-    cuboidPosition: List[float] = controller.sim.getObjectPosition(cuboidHandle, controller.sim.handle_world)
-    tipPosition = controller.tipPosition
+    # cuboidHandle: int = controller.sim.getObject('/Cuboid')
+    # cuboidPosition: List[float] = controller.sim.getObjectPosition(cuboidHandle, controller.sim.handle_world)
+    # tipPosition = controller.tipPosition
 
-    controller.goToPosition_Absolute([cuboidPosition[0], cuboidPosition[1], cuboidPosition[2] + 0.02])
-    controller.closeRG2()
-    time.sleep(2)
-    controller.goToPosition_Absolute(tipPosition)
-    controller.openRG2()
+    # controller.goToPosition_Absolute([cuboidPosition[0], cuboidPosition[1], cuboidPosition[2] + 0.02])
+    # controller.closeRG2()
+    # time.sleep(2)
+    # controller.goToPosition_Absolute(tipPosition)
+    # controller.openRG2()
 
     # prevent the program from exiting (press enter to exit)
     while (t := input()) != "":

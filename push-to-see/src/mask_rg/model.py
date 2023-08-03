@@ -10,7 +10,7 @@ from torchvision.models.detection import MaskRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 from torchvision.transforms import ToTensor
 from src.mask_rg.engine import train_one_epoch, evaluate
-import src.mask_rg.utils
+import src.mask_rg.utils as utils
 import time
 import datetime
 import yaml
