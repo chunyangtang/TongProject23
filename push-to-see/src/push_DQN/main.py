@@ -214,7 +214,8 @@ def main():
     # -------------------------------------------------------------
 
     # Start main training/testing loop
-    while True:
+    # while True:
+    for _ in range(300):
         print(BColors.WARNING + '\n%s iteration: %d' % ('Testing' if is_testing else 'Training', trainer.iteration) +
               BColors.ENDC + '  (Session iteration: {:d})'.format(session_counter))
         iteration_time_0 = time.time()

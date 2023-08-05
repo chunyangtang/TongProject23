@@ -257,7 +257,10 @@ class RewardGenerator(object):
                 # plt.imshow(curr_gt)
                 # plt.imshow(curr_pred)
             else:
-                img_err_masks[np.asarray(curr_gt, dtype=bool)] = color_space_red[np.abs(17-idx)]
+                try:
+                    img_err_masks[np.asarray(curr_gt, dtype=bool)] = color_space_red[np.abs(17-idx)]
+                except:
+                    pass
                 # plt.imshow(curr_gt)
                 # plt.imshow(img_err_masks)
         return img_err_masks
