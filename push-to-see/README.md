@@ -45,5 +45,11 @@ Notice that Mask-RG will automatically and implicitly load pretrained weights in
 
 The Push-DQN model can be trained from scratch when `model.file` is set to `new` in `push-DQN_config.yaml`, remeber to change `istesting` to false for training.
 
+**Known issues**: A "list out of range" error often occurs at the end of `./src/mask_rg/rewards.py>RewardGenerator>print_seg_diff`, it is currently ignored by adding a `try...except` block.
+
 ### Utilizing the full pretrained Push-DQN
-`pushtosee_segmetation.py` file is still under construction...
+`pushtosee_segmetation.py` is implemented using the adapted version of `push_DQN/main.py` named `push_DQN/main_connector.py`. The models & configs should be ready and set to test mode.
+
+Open the simulation, call the function `get_segmentation` and get the segmentation of each object.
+
+This file could potentially be optimized.
