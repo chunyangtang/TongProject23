@@ -9,50 +9,13 @@ import cv2
 import yaml
 from src.mask_rg.mask_rg import MaskRG
 from src.push_DQN.robot import Robot
-# import src.push_DQN.utils as utils
 
-
-# # TODO FILE UNFINISHED
-
-# def main():
-#     min_num_obj = 26
-#     max_num_obj = 32
-#     heightmap_resolution = 0.002
-#     workspace_limits = np.asarray([[-0.724, -0.276], [-0.224, 0.224], [-0.0001, 0.4]])
-#     # Initialize pick-and-place system (camera and robot)
-#     robot = Robot(min_num_obj, max_num_obj, workspace_limits)
-    
-#     for i in range(30):
-#         print('Pushing action ', i)
-#         # Make sure simulation is still stable (if not, reset simulation)
-#         robot.check_sim()
-
-#         # Get latest RGB-D image
-#         color_img, depth_img_raw = robot.get_camera_data()
-#         # Detph scale is 1 for simulation!!
-#         depth_img = depth_img_raw * robot.cam_depth_scale # Apply depth scale from calibration
-
-#         # Get heightmap from RGB-D image (by re-projecting 3D point cloud)
-#         color_heightmap, depth_heightmap = utils.get_heightmap(color_img, depth_img, robot.cam_intrinsics,
-#                                                                robot.cam_pose, workspace_limits, heightmap_resolution)
-#         valid_depth_heightmap = depth_heightmap.copy()
-#         valid_depth_heightmap[np.isnan(valid_depth_heightmap)] = 0
 
 os.chdir('../..')
 
 from src.push_DQN.main_connector import push_the_scene
 
 CONF_PATH = './push-DQN_config.yaml'
-
-class BColors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 with open(CONF_PATH) as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
@@ -63,24 +26,28 @@ robot = Robot(config['environment']['min_num_objects'], config['environment']['m
 
 
 def get_segmentation():
+    """
+    Get segmentation of the objects in the current scene base on trained Mask-RCNN model.
+    Returns:
+        rectangles: list of (x1, y1, x2, y2), i.e. each object's bounding box (left-top and right-bottom corners)
+        binary_masks: list of binary masks, i.e. each object's segmentation mask (0 for background, 1 for object)
+    """
     print('Pushing the objects first...')
-    push_the_scene(mask_rg, robot)
+    push_the_scene(mask_rg, robot, 0)
     print('Now segmenting the objects...')
-    # # Get latest RGB-D image
-    # color_img, depth_img_raw = robot.get_camera_data()
-    # # Detph scale is 1 for simulation!!
-    # depth_img = depth_img_raw * robot.cam_depth_scale # Apply depth scale from calibration
+    # Get the depth image
     color_m_rg, depth_m_rg, [segmentation_mask, num_objects] = robot.get_data_mask_rg()
     # Imitating the way to process depth data in MaskRG.set_reward_generator
-    depth_image = np.round(depth_m_rg / 20).astype(np.uint8)
+    # Preprocess depth image
+    depth_image = depth_m_rg / 20 / 255
     depth_image = np.repeat(depth_image.reshape(1024, 1024, 1), 3, axis=2)
+    depth_image = depth_image.transpose(2, 0, 1)
+    # Get segmentation
     with torch.no_grad():
-        depth_tensor = torch.tensor(depth_image)
-        if torch.cuda.is_available():
-            depth_tensor = depth_tensor.cuda()
+        depth_tensor = torch.tensor(depth_image).to(mask_rg.model.device).float()
         img_pred = mask_rg.model.eval_single_img([depth_tensor])
 
-
+    # Get the bounding boxes and segmentation masks
     img_pred = img_pred[0]
     boxes = img_pred['boxes']
     scores = img_pred['scores']
