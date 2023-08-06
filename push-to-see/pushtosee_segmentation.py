@@ -70,7 +70,7 @@ def get_segmentation():
     color_img, depth_img_raw = robot.get_camera_data()
     # Detph scale is 1 for simulation!!
     depth_img = depth_img_raw * robot.cam_depth_scale # Apply depth scale from calibration
-        # convert img values to [0, 1]
+    # convert img values to [0, 1]
     img_for_train = torch.tensor(depth_img).float() / 255
     img_for_train = [img_for_train.permute(2, 0, 1).to(mask_rg.model.device)]
     img_pred = mask_rg.model.eval_single_img(img_for_train)
