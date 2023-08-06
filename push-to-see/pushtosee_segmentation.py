@@ -66,14 +66,20 @@ def get_segmentation():
     print('Pushing the objects first...')
     push_the_scene(mask_rg, robot)
     print('Now segmenting the objects...')
-    # Get latest RGB-D image
-    color_img, depth_img_raw = robot.get_camera_data()
-    # Detph scale is 1 for simulation!!
-    depth_img = depth_img_raw * robot.cam_depth_scale # Apply depth scale from calibration
-    # convert img values to [0, 1]
-    img_for_train = torch.tensor(depth_img).float() / 255
-    img_for_train = [img_for_train.permute(2, 0, 1).to(mask_rg.model.device)]
-    img_pred = mask_rg.model.eval_single_img(img_for_train)
+    # # Get latest RGB-D image
+    # color_img, depth_img_raw = robot.get_camera_data()
+    # # Detph scale is 1 for simulation!!
+    # depth_img = depth_img_raw * robot.cam_depth_scale # Apply depth scale from calibration
+    color_m_rg, depth_m_rg, [segmentation_mask, num_objects] = robot.get_data_mask_rg()
+    # Imitating the way to process depth data in MaskRG.set_reward_generator
+    depth_image = np.round(depth_m_rg / 20).astype(np.uint8)
+    depth_image = np.repeat(depth_image.reshape(1024, 1024, 1), 3, axis=2)
+    with torch.no_grad():
+        depth_tensor = torch.tensor(depth_image)
+        if torch.cuda.is_available():
+            depth_tensor = depth_tensor.cuda()
+        img_pred = mask_rg.model.eval_single_img([depth_tensor])
+
 
     img_pred = img_pred[0]
     boxes = img_pred['boxes']
