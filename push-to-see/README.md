@@ -16,7 +16,12 @@ A short description of the model and video demonstrations can be seen on [this v
 
 
 ## Instructions
-All instructions and code implementations are based on the folder `push-to-see` as the working directory.
+
+### Installation
+1. All instructions and code implementations are based on the folder `push-to-see` as the working directory except `pushtosee_segmetation.py` which should be run in the parent directory.
+2. Create a folder named `pretrained` in the working directory and **download the model weights** listed above. `data`, `exps`, `logs` and `Database_vrep_inria` can also be created for their usages in the programs below.
+3. Install the required packages listed in `requirements.txt` of the parent directory (`TongProject23`) using `pip install -r ../requirements.txt`.
+
 ### Generating dataset
 1. Open the simulation scene at `./simulation/data_generation_scene.ttt` using CoppeliaSim. Notice the objects of the scene is used in `Task_no_1.ttt` rather than `Task_no_2_VPG_heap.ttt`
 2. Run `python ./src/database_generator.py` to generate the dataset. (The dataset is set to be saved at `./Database_vrep_inria/` in configuration which is the same in the model-training config file.)
@@ -49,6 +54,8 @@ The Push-DQN model can be trained from scratch when `model.file` is set to `new`
 
 ### Utilizing the full pretrained Push-DQN
 `pushtosee_segmetation.py` is implemented using the adapted version of `push_DQN/main.py` named `push_DQN/main_connector.py`. The models & configs should be ready and set to test mode.
+
+**This file is designed to be working at `TongProject23` folder. When calling it, start your program in that directory or try use os.chdir() or sys.path.append(".") to use it.**
 
 Open the simulation, call the function `get_segmentation` and get the segmentation of each object.
 

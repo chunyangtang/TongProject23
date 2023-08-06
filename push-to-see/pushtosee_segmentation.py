@@ -2,7 +2,7 @@ import sys
 sys.path.append('.')
 import os
 
-os.chdir('./src/push_DQN')
+os.chdir('./push-to-see/src/push_DQN')
 import numpy as np
 import torch
 import cv2

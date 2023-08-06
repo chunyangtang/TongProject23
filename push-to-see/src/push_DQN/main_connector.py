@@ -42,7 +42,7 @@ mask_rg = MaskRG(config['detection_thresholds']['confidence_threshold'], config[
 robot = Robot(config['environment']['min_num_objects'], config['environment']['max_num_objects'], np.asarray(config['environment']['workspace_limits']))
 
 
-def push_the_scene(mask_rg=mask_rg, robot=robot):
+def push_the_scene(mask_rg=mask_rg, robot=robot, push_times=30):
 
 
 
@@ -223,7 +223,7 @@ def push_the_scene(mask_rg=mask_rg, robot=robot):
 
     # Start main training/testing loop
     # while True:
-    for _ in range(5):
+    for _ in range(push_times):
         print(BColors.WARNING + '\n%s iteration: %d' % ('Testing' if is_testing else 'Training', trainer.iteration) +
               BColors.ENDC + '  (Session iteration: {:d})'.format(session_counter))
         iteration_time_0 = time.time()
