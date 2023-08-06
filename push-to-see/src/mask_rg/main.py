@@ -6,10 +6,16 @@ import yaml
 import numpy as np
 import os
 from torch.utils import data as td
+import argparse
 
 
 def main():
 
+    parser = argparse.ArgumentParser(description='Train or evaluate the Mask-RCNN model')
+    parser.add_argument('--train', action='store_true', help='train the model')
+    parser.add_argument('--evaluate', action='store_true', help='evaluate the model')
+    args = parser.parse_args()
+    
     with open('model_config.yaml') as f:
         configuration = yaml.load(f, Loader=yaml.FullLoader)
 
