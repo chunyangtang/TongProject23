@@ -1,6 +1,7 @@
 import sys
 sys.path.append('.')
 import os
+
 os.chdir('./src/push_DQN')
 import numpy as np
 import torch
@@ -36,6 +37,8 @@ from src.push_DQN.robot import Robot
 #                                                                robot.cam_pose, workspace_limits, heightmap_resolution)
 #         valid_depth_heightmap = depth_heightmap.copy()
 #         valid_depth_heightmap[np.isnan(valid_depth_heightmap)] = 0
+
+os.chdir('../..')
 
 from src.push_DQN.main_connector import push_the_scene
 

@@ -34,7 +34,6 @@ class BColors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
 with open(CONF_PATH) as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
