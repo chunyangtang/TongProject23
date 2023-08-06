@@ -295,5 +295,7 @@ if __name__ == "__main__":
     with open(config_file) as f:
         configuration = yaml.load(f, Loader=yaml.FullLoader)
 
+    print("Configuration file loaded from: ", config_file)
+
     dg = DatabaseGenerator(configuration)
     dg.generate_database()

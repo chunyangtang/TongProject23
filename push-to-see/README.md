@@ -13,3 +13,11 @@ A short description of the model and video demonstrations can be seen on [this v
 
 ###
 (Instructions for installation, training and running will be included in this readme file. For now, please contact the corresponding author if you require any help via baris.serhan@manchester.ac.uk)  
+
+
+## Instructions
+All instructions and code implementations are based on the folder `push-to-see` as the working directory.
+### Generating dataset
+1. Open the simulation scene at `./simulation/data_generation_scene.ttt` using CoppeliaSim. 
+2. Run `python ./src/database_generator.py` to generate the dataset. (The dataset is set to be saved at `./Database_vrep_inria/` in configuration which is the same in the model-training config file.)
+### Training Mask-RG

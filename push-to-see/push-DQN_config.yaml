@@ -1,7 +1,7 @@
 model:
   path: ./pretrained/
-  # file: push_dqn_41k.pth # set 'new' for not loading a snapshot of a pretrained model
-  file: new
+  file: push_dqn_41k.pth # set 'new' for not loading a snapshot of a pretrained model
+  # file: new
 
 detection_thresholds:
   confidence_threshold: 0.85 # to define whether a prediction from mask_rg will be considered as a possible object/a detection
