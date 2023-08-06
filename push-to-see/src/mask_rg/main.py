@@ -26,21 +26,28 @@ def main():
     dataset = PushAndGraspDataset(configuration)
     test_indices = os.path.join(configuration['dataset']['path'], configuration['dataset']['test_indices'])
     test_subset = td.Subset(dataset, test_indices)
-    # Training:
-    # model.set_data(dataset)
-    # model.train_model()
+    train_indices = os.path.join(configuration['dataset']['path'], configuration['dataset']['train_indices'])
+    train_subset = td.Subset(dataset, train_indices)
 
-    # Evaluation:
-    # this loads the saved weights from the file in the config file
-    model.load_weights()
-    # load a new dataset for the evaluation
-    model.set_data(test_subset, is_test=True, batch_size=20)
+    if args.train:
+        # Training:
+        model.set_data(train_subset)
+        model.train_model()
+        print("Training finished!")
 
-    # evaluate
-    res = model.evaluate_model()
-    np.save('results.npy', res)
-    with open('results.txt', 'w') as output:
-        output.write(res)
+    if args.evaluate:
+        # Evaluation:
+        # this loads the saved weights from the file in the config file
+        model.load_weights()
+        # load a new dataset for the evaluation
+        model.set_data(test_subset, is_test=True, batch_size=20)
+
+        # evaluate
+        res = model.evaluate_model()
+        np.save('exps/results.npy', res)
+        with open('exps/results.txt', 'w') as output:
+            output.write(res)
+        print("Evaluation finished!")
 
 
 if __name__ == "__main__":

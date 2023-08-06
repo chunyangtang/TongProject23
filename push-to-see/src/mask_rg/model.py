@@ -144,6 +144,7 @@ class MaskRGNetwork(nn.Module):
         timestamp = datetime.datetime.fromtimestamp(t)
         file_name = self.saving_prefix + string + timestamp.strftime('%Y-%m-%d.%H:%M:%S') + '.pth'
         torch.save(self.mask_r_cnn.state_dict(), os.path.join(self.saving_path, file_name))
+        print('Model saved to: ', os.path.join(self.saving_path, file_name))
 
     @staticmethod
     def print_boxes(image, input_tensor, score_threshold=0.75):

@@ -1,3 +1,4 @@
+coppeliasim_zmqremoteapi_client
 numpy
 matplotlib
 pygame

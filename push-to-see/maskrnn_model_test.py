@@ -1,5 +1,6 @@
 import sys
 sys.path.append('.')
+import argparse
 import cv2
 import yaml
 import torch
@@ -8,15 +9,24 @@ import numpy as np
 from src.mask_rg.model import MaskRGNetwork
 
 CONF_PATH = './model_config.yaml'
-IMG_FILE = 'color_img.png'
 
 def main():
+    parser = argparse.ArgumentParser(description='Test the Mask-RCNN model')
+    parser.add_argument('--img', type=str, help='image file name')
+    args = parser.parse_args()
+
+    if args.img:
+        img_filename = args.img
+    else:
+        print('Please specify the image file name.')
+        return
+
     with open(CONF_PATH) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     model = MaskRGNetwork(config)
     model.load_weights()
     print('Weights loaded!')
-    img = cv2.imread('./data/' + IMG_FILE)
+    img = cv2.imread('./data/' + img_filename)
     # convert img values to [0, 1]
     img_for_train = torch.tensor(img).float() / 255
     img_for_train = [img_for_train.permute(2, 0, 1).to(model.device)]
@@ -49,11 +59,8 @@ def main():
 
         # Draw contours
         img = cv2.drawContours(img, contour, -1, (0, 0, 255), 2)
-
-
-
     
-    cv2.imwrite('./exps/pred_'+IMG_FILE, img)
+    cv2.imwrite('./exps/pred_'+img_filename, img)
     print('Done!')
 
 

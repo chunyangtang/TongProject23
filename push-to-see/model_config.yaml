@@ -23,6 +23,6 @@ dataset:
   data_augmentation: False
 
 saving:
-  path: saved_models/inria_train_2
+  path: ./saved_models/inria_train_2
   model_name: my_model_inria_v2_0ep_
   config_name:
