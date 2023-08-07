@@ -18,7 +18,7 @@ A short description of the model and video demonstrations can be seen on [this v
 ## Instructions
 
 ### Installation
-1. All instructions and code implementations are based on the folder `push-to-see` as the working directory except `pushtosee_segmetation.py` which should be run in the parent directory.
+1. All instructions and code implementations are based on the folder `push_to_see` as the working directory except `pushtosee_segmetation.py` which should be run in the parent directory.
 2. Create a folder named `pretrained` in the working directory and **download the model weights** listed above. `data`, `exps`, `logs` and `Database_vrep_inria` can also be created for their usages in the programs below.
 3. Install the required packages listed in `requirements.txt` of the parent directory (`TongProject23`) using `pip install -r ../requirements.txt`.
 

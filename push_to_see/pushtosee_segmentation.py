@@ -2,7 +2,7 @@ import sys
 sys.path.append('.')
 import os
 
-os.chdir('./push-to-see/src/push_DQN')
+os.chdir('./push_to_see/src/push_DQN')
 import numpy as np
 import torch
 import cv2
@@ -21,20 +21,22 @@ with open(CONF_PATH) as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 mask_rg = MaskRG(config['detection_thresholds']['confidence_threshold'], config['detection_thresholds']['mask_threshold'])
-# Initialize pick-and-place system (camera and robot)
-robot = Robot(config['environment']['min_num_objects'], config['environment']['max_num_objects'], np.asarray(config['environment']['workspace_limits']))
 
 
-def get_segmentation():
+
+def get_segmentation(robot: Robot, push_times=30):
     """
     Get segmentation of the objects in the current scene base on trained Mask-RCNN model.
+    Args:
+        robot: Robot object to interact with the scene
+        push_times: int, number of times to push the scene before getting the segmentation
     Returns:
         rectangles: list of (x1, y1, x2, y2), i.e. each object's bounding box (left-top and right-bottom corners)
         binary_masks: list of binary masks, i.e. each object's segmentation mask (0 for background, 1 for object)
     """
-    print('Pushing the objects first...')
-    push_the_scene(mask_rg, robot, 0)
-    print('Now segmenting the objects...')
+    print('Pushing the objects...')
+    push_the_scene(mask_rg, robot, push_times=push_times)
+    print('Segmenting the objects...')
     # Get the depth image
     color_m_rg, depth_m_rg, [segmentation_mask, num_objects] = robot.get_data_mask_rg()
     # Imitating the way to process depth data in MaskRG.set_reward_generator
@@ -67,6 +69,10 @@ def get_segmentation():
     return rectangles, binary_masks
 
 if __name__ == '__main__':
-    rectangles, binary_masks = get_segmentation()
+    # Initialize pick-and-place system (camera and robot)
+    # Use Robot(26, 32, np.asarray([[-0.724, -0.276], [-0.224, 0.224], [-0.0001, 0.4]])) in the given scenes.
+    robot = Robot(config['environment']['min_num_objects'], config['environment']['max_num_objects'], np.asarray(config['environment']['workspace_limits']))
+    # Get segmentation
+    rectangles, binary_masks = get_segmentation(robot, push_times=0)
 
 
