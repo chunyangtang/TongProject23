@@ -1,8 +1,26 @@
 import time
 import numpy as np
-import utils
+# import utils
+import math
 from simulation import vrep
 import matplotlib.pyplot as plt
+
+# Get rotation matrix from euler angles
+def euler2rotm(theta):
+    R_x = np.array([[1,         0,                  0                   ],
+                    [0,         math.cos(theta[0]), -math.sin(theta[0]) ],
+                    [0,         math.sin(theta[0]), math.cos(theta[0])  ]
+                    ])
+    R_y = np.array([[math.cos(theta[1]),    0,      math.sin(theta[1])  ],
+                    [0,                     1,      0                   ],
+                    [-math.sin(theta[1]),   0,      math.cos(theta[1])  ]
+                    ])         
+    R_z = np.array([[math.cos(theta[2]),    -math.sin(theta[2]),    0],
+                    [math.sin(theta[2]),    math.cos(theta[2]),     0],
+                    [0,                     0,                      1]
+                    ])            
+    R = np.dot(R_z, np.dot( R_y, R_x ))
+    return R
 
 class Robot(object):
     def __init__(self, min_num_obj, max_num_obj, workspace_limits):
@@ -61,7 +79,7 @@ class Robot(object):
         # WHY minus?
         cam_orientation = [-cam_orientation[0], -cam_orientation[1], -cam_orientation[2]]
         cam_rotm = np.eye(4, 4)
-        cam_rotm[0:3, 0:3] = np.linalg.inv(utils.euler2rotm(cam_orientation))
+        cam_rotm[0:3, 0:3] = np.linalg.inv(euler2rotm(cam_orientation))
         self.cam_pose = np.dot(cam_trans, cam_rotm) # Compute rigid transformation representating camera pose
         self.cam_intrinsics = np.asarray([[618.62, 0, 320], [0, 618.62, 240], [0, 0, 1]])
         self.cam_depth_scale = 1
