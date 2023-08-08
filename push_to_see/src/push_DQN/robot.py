@@ -22,8 +22,13 @@ def euler2rotm(theta):
     R = np.dot(R_z, np.dot( R_y, R_x ))
     return R
 
+min_num_obj_default = 26
+max_num_obj_default = 32
+workspace_limits_default = np.asarray([[-0.724, -0.276], [-0.224, 0.224], [-0.0001, 0.4]])
+
+
 class Robot(object):
-    def __init__(self, min_num_obj, max_num_obj, workspace_limits):
+    def __init__(self, min_num_obj=min_num_obj_default, max_num_obj=max_num_obj_default,workspace_limits=workspace_limits_default):
 
         self.workspace_limits = workspace_limits
 
