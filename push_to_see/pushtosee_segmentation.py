@@ -33,6 +33,7 @@ def get_segmentation(robot: Robot, push_times=30):
     Returns:
         rectangles: list of (x1, y1, x2, y2), i.e. each object's bounding box (left-top and right-bottom corners)
         binary_masks: list of binary masks, i.e. each object's segmentation mask (0 for background, 1 for object)
+        scores_selected: list of numbers, i.e. each object's score / confidence of segmentation (0.9 - 1.0)
     """
     print('Pushing the objects...')
     push_the_scene(mask_rg, robot, push_times=push_times)
@@ -56,6 +57,7 @@ def get_segmentation(robot: Robot, push_times=30):
     masks = img_pred['masks']
     rectangles = []  # list of (x1, y1, x2, y2), i.e. each object's bounding box
     binary_masks = []  # list of binary masks, i.e. each object's segmentation mask
+    scores_selected = []
     for box, score, mask in zip(boxes, scores, masks):
         if score < 0.9:
             continue
@@ -65,14 +67,16 @@ def get_segmentation(robot: Robot, push_times=30):
         _, binary_mask = cv2.threshold(mask[0].detach().cpu().numpy(), 0.5, 1, cv2.THRESH_BINARY)
         binary_mask = binary_mask.astype(np.uint8)
         binary_masks.append(binary_mask)
+        scores_selected.append(score)
 
-    return rectangles, binary_masks
+    assert len(rectangles) == len(binary_masks) == len(scores_selected)
+    return rectangles, binary_masks, scores_selected
 
 if __name__ == '__main__':
     # Initialize pick-and-place system (camera and robot)
     # Use Robot(26, 32, np.asarray([[-0.724, -0.276], [-0.224, 0.224], [-0.0001, 0.4]])) in the given scenes.
     robot = Robot(config['environment']['min_num_objects'], config['environment']['max_num_objects'], np.asarray(config['environment']['workspace_limits']))
     # Get segmentation
-    rectangles, binary_masks = get_segmentation(robot, push_times=0)
+    rectangles, binary_masks, scores = get_segmentation(robot, push_times=0)
 
 

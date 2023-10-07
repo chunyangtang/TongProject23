@@ -10,4 +10,4 @@ from push_to_see.src.push_DQN.robot import Robot
 # Using Robot with default parameters (in given Task_no_*)
 robot = Robot()
 # Perform segmentation, push_times normally required to be 30.
-rectangles, binary_masks = get_segmentation(robot=robot, push_times=1)
+rectangles, binary_masks, scores = get_segmentation(robot=robot, push_times=1)
